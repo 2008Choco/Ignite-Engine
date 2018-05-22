@@ -1,11 +1,16 @@
 package me.choco.ignite;
 
+import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import me.choco.ignite.render.Renderer;
+
 import java.nio.IntBuffer;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
@@ -13,6 +18,8 @@ import static org.lwjgl.system.MemoryUtil.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class IgniteGame {
+	
+	private final List<Renderer> renderers = new LinkedList<>();
 	
 	private long window;
 	
@@ -53,9 +60,35 @@ public class IgniteGame {
 		while (!glfwWindowShouldClose(window)) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
+			this.render();
+			
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
+		
+		this.renderers.clear();
+		
+		Callbacks.glfwFreeCallbacks(window);
+		glfwDestroyWindow(window);
+		
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
+	}
+	
+	public void render() {
+		this.renderers.forEach(Renderer::render);
+	}
+	
+	public void addRenderer(Renderer renderer) {
+		this.renderers.add(renderer);
+	}
+	
+	public void addRenderer(int index, Renderer renderer) {
+		this.renderers.add(index, renderer);
+	}
+	
+	public void removeRenderer(Renderer renderer) {
+		this.renderers.remove(renderer);
 	}
 	
 }
