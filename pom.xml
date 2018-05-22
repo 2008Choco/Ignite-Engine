@@ -82,6 +82,13 @@
       <classifier>${lwjgl.natives}</classifier>
     </dependency>
     
+    <!-- LWJGL-Related Libraries -->
+    <dependency>
+      <groupId>org.joml</groupId>
+      <artifactId>joml</artifactId>
+      <version>1.9.9</version>
+    </dependency>
+    
     <!-- Misc. Dependencies -->
     <dependency>
       <groupId>com.google.guava</groupId>

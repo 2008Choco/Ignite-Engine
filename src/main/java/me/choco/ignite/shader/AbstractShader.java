@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL20.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.FloatBuffer;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,12 @@ import java.util.Map;
 import com.google.common.base.Preconditions;
 
 import me.choco.ignite.IgniteGame;
+
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+import org.lwjgl.system.MemoryStack;
 
 public abstract class AbstractShader implements Shader {
 	
@@ -76,6 +83,32 @@ public abstract class AbstractShader implements Shader {
 		Preconditions.checkState(location >= 0, "Could not find uniform variable with name %s", name);
 		
 		this.uniforms.put(name, location);
+	}
+	
+	@Override
+	public void setUniformValue(String name, Matrix4f matrix) {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			FloatBuffer buffer = stack.mallocFloat(16);
+			glUniformMatrix4fv(uniforms.get(name), false, matrix.get(buffer));
+		}
+	}
+	
+	@Override
+	public void setUniformValue(String name, Matrix3f matrix) {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			FloatBuffer buffer = stack.mallocFloat(9);
+			glUniformMatrix3fv(uniforms.get(name), false, matrix.get(buffer));
+		}
+	}
+	
+	@Override
+	public void setUniformValue(String name, Vector4f vector) {
+		glUniform4f(uniforms.get(name), vector.x, vector.y, vector.z, vector.w);
+	}
+	
+	@Override
+	public void setUniformValue(String name, Vector3f vector) {
+		glUniform3f(uniforms.get(name), vector.x, vector.y, vector.z);
 	}
 	
 	@Override
