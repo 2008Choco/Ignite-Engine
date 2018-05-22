@@ -84,14 +84,21 @@ public final class OBJLoader {
 		for (int i = 1; i <= 3; i++) {
 			String[] faceData = lineParts[i].split("\\/");
 			
-			int vertexIndex = Integer.parseInt(faceData[0]);
-			int textureCoordinateIndex = Integer.parseInt(faceData[1]);
-			int normalIndex = Integer.parseInt(faceData[2]);
+			Vertex vertex = new Vertex();
+			if (faceData[0].isEmpty()) {
+				System.err.println("Corrupted OBJ file... missing face vertex position");
+				break;
+			}
 			
-			Vertex vertex = new Vertex()
-					.position(vertexes.get(vertexIndex))
-					.textureCoordinates(textureCoordinates.get(textureCoordinateIndex))
-					.normal(normals.get(normalIndex));
+			int vertexIndex = Integer.parseInt(faceData[0]);
+			vertex.position(vertexes.get(vertexIndex));
+			
+			if (!faceData[1].isEmpty()) {
+				vertex.textureCoordinates(textureCoordinates.get(Integer.parseInt(faceData[1])));
+			}
+			if (!faceData[2].isEmpty()) {
+				vertex.normal(normals.get(Integer.parseInt(faceData[2])));
+			}
 			
 			VERTEX_BUFFER.add(vertex);
 			INDICES_BUFFER.add(vertexIndex - 1);
