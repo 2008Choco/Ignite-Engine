@@ -1,27 +1,27 @@
 package me.choco.ignite;
 
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.system.MemoryStack.stackPush;
+import static org.lwjgl.system.MemoryUtil.NULL;
+
+import java.nio.IntBuffer;
+
+import me.choco.ignite.render.Renderer;
+
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
-import me.choco.ignite.render.Renderer;
-
-import java.nio.IntBuffer;
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
-import static org.lwjgl.glfw.GLFW.*;
-
 public class IgniteGame {
 	
-	private final List<Renderer> renderers = new LinkedList<>();
-	
 	private long window;
+	private Renderer primaryRenderer;
 	
 	public final void init(String title, int width, int height) {
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -57,7 +57,11 @@ public class IgniteGame {
 		GL.createCapabilities();
 		glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 		
-		this.renderers.forEach(Renderer::init);
+		if (primaryRenderer == null) {
+			System.err.println("Running game with no primary renderer...");
+		} else {
+			this.primaryRenderer.init();
+		}
 		
 		while (!glfwWindowShouldClose(window)) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -68,7 +72,8 @@ public class IgniteGame {
 			glfwPollEvents();
 		}
 		
-		this.renderers.clear();
+		this.primaryRenderer.dispose();
+		this.primaryRenderer.clearChildren();
 		
 		Callbacks.glfwFreeCallbacks(window);
 		glfwDestroyWindow(window);
@@ -77,20 +82,13 @@ public class IgniteGame {
 		glfwSetErrorCallback(null).free();
 	}
 	
-	public void render() {
-		this.renderers.forEach(Renderer::render);
+	public final void render() {
+		if (primaryRenderer == null) return;
+		this.primaryRenderer.renderWithChildren();
 	}
 	
-	public void addRenderer(Renderer renderer) {
-		this.renderers.add(renderer);
-	}
-	
-	public void addRenderer(int index, Renderer renderer) {
-		this.renderers.add(index, renderer);
-	}
-	
-	public void removeRenderer(Renderer renderer) {
-		this.renderers.remove(renderer);
+	public final void setPrimaryRenderer(Renderer renderer) {
+		this.primaryRenderer = renderer;
 	}
 	
 }

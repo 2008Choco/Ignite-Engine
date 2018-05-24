@@ -9,7 +9,7 @@ import me.choco.ignite.util.OBJLoader;
 
 import org.lwjgl.opengl.GL11;
 
-public class ExampleRenderer implements Renderer {
+public class ExampleRenderer extends Renderer {
 
 	private Model model;
 	private VBO<Mesh> vbo;
@@ -27,6 +27,11 @@ public class ExampleRenderer implements Renderer {
 		GL11.glClearColor(0, 0, 0, 0);
 		
 		this.vbo.draw();
+	}
+	
+	@Override
+	public void dispose() {
+		this.vbo.dispose();
 	}
 	
 }

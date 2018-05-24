@@ -6,7 +6,7 @@ public class ExampleGame extends IgniteGame {
 	
 	public ExampleGame() {
 		this.init("Example Game", 980, 720);
-		this.addRenderer(new ExampleRenderer());
+		this.setPrimaryRenderer(new ExampleRenderer());
 		this.run();
 	}
 	
