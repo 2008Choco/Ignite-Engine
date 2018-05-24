@@ -16,13 +16,16 @@ public class ExampleRenderer implements Renderer {
 	
 	@Override
 	public void init() {
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		
 		this.model = OBJLoader.loadModel("/cube.obj");
 		this.vbo = new MeshVBO().allocate(model);
 	}
 	
 	@Override
 	public void render() {
-		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+		GL11.glClearColor(0, 0, 0, 0);
+		
 		this.vbo.draw();
 	}
 	
