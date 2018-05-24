@@ -57,6 +57,8 @@ public class IgniteGame {
 		GL.createCapabilities();
 		glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 		
+		this.renderers.forEach(Renderer::init);
+		
 		while (!glfwWindowShouldClose(window)) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
