@@ -90,18 +90,18 @@ public final class OBJLoader {
 				break;
 			}
 			
-			int vertexIndex = Integer.parseInt(faceData[0]);
+			int vertexIndex = Integer.parseInt(faceData[0]) - 1;
 			vertex.position(vertexes.get(vertexIndex));
 			
 			if (!faceData[1].isEmpty()) {
-				vertex.textureCoordinates(textureCoordinates.get(Integer.parseInt(faceData[1])));
+				vertex.textureCoordinates(textureCoordinates.get(Integer.parseInt(faceData[1]) - 1));
 			}
 			if (!faceData[2].isEmpty()) {
-				vertex.normal(normals.get(Integer.parseInt(faceData[2])));
+				vertex.normal(normals.get(Integer.parseInt(faceData[2]) - 1));
 			}
 			
 			VERTEX_BUFFER.add(vertex);
-			INDICES_BUFFER.add(vertexIndex - 1);
+			INDICES_BUFFER.add(vertexIndex);
 		}
 	}
 	
