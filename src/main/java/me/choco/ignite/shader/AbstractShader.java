@@ -51,7 +51,7 @@ public abstract class AbstractShader implements Shader {
 		
 		StringBuilder source = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(IgniteGame.class.getResourceAsStream(path)))) {
-			reader.lines().forEach(source::append);
+			reader.lines().forEach(l -> source.append(l).append('\n'));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
