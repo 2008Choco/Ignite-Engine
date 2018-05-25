@@ -8,9 +8,9 @@ import org.joml.Vector3fc;
 
 public class Transformation {
 	
-	private final Vector3f position = new Vector3f();
-	private final Vector3f rotation = new Vector3f();
-	private final Vector3f scale = new Vector3f();
+	protected final Vector3f position = new Vector3f();
+	protected final Vector3f rotation = new Vector3f();
+	protected final Vector3f scale = new Vector3f();
 	
 	public void setPosition(float x, float y, float z) {
 		this.position.set(x, y, z);
