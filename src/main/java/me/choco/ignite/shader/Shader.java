@@ -1,9 +1,9 @@
 package me.choco.ignite.shader;
 
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.Matrix3fc;
+import org.joml.Matrix4fc;
+import org.joml.Vector3fc;
+import org.joml.Vector4fc;
 
 public interface Shader {
 	
@@ -15,13 +15,13 @@ public interface Shader {
 	
 	public void createUniform(String name);
 	
-	public void setUniformValue(String name, Matrix4f matrix);
+	public void setUniformValue(String name, Matrix4fc matrix);
 	
-	public void setUniformValue(String name, Matrix3f matrix);
+	public void setUniformValue(String name, Matrix3fc matrix);
 	
-	public void setUniformValue(String name, Vector4f vector);
+	public void setUniformValue(String name, Vector4fc vector);
 	
-	public void setUniformValue(String name, Vector3f vector);
+	public void setUniformValue(String name, Vector3fc vector);
 	
 	public void setUniformValue(String name, int value);
 	

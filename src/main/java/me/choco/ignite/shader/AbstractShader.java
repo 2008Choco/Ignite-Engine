@@ -1,6 +1,28 @@
 package me.choco.ignite.shader;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VALIDATE_STATUS;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glDeleteProgram;
+import static org.lwjgl.opengl.GL20.glDetachShader;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform4f;
+import static org.lwjgl.opengl.GL20.glUniformMatrix3fv;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glValidateProgram;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,15 +32,15 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.joml.Matrix3fc;
+import org.joml.Matrix4fc;
+import org.joml.Vector3fc;
+import org.joml.Vector4fc;
+import org.lwjgl.system.MemoryStack;
+
 import com.google.common.base.Preconditions;
 
 import me.choco.ignite.IgniteGame;
-
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-import org.lwjgl.system.MemoryStack;
 
 public abstract class AbstractShader implements Shader {
 	
@@ -86,7 +108,7 @@ public abstract class AbstractShader implements Shader {
 	}
 	
 	@Override
-	public void setUniformValue(String name, Matrix4f matrix) {
+	public void setUniformValue(String name, Matrix4fc matrix) {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			FloatBuffer buffer = stack.mallocFloat(16);
 			glUniformMatrix4fv(uniforms.get(name), false, matrix.get(buffer));
@@ -94,7 +116,7 @@ public abstract class AbstractShader implements Shader {
 	}
 	
 	@Override
-	public void setUniformValue(String name, Matrix3f matrix) {
+	public void setUniformValue(String name, Matrix3fc matrix) {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			FloatBuffer buffer = stack.mallocFloat(9);
 			glUniformMatrix3fv(uniforms.get(name), false, matrix.get(buffer));
@@ -102,13 +124,13 @@ public abstract class AbstractShader implements Shader {
 	}
 	
 	@Override
-	public void setUniformValue(String name, Vector4f vector) {
-		glUniform4f(uniforms.get(name), vector.x, vector.y, vector.z, vector.w);
+	public void setUniformValue(String name, Vector4fc vector) {
+		glUniform4f(uniforms.get(name), vector.get(0), vector.get(1), vector.get(2), vector.get(3));
 	}
 	
 	@Override
-	public void setUniformValue(String name, Vector3f vector) {
-		glUniform3f(uniforms.get(name), vector.x, vector.y, vector.z);
+	public void setUniformValue(String name, Vector3fc vector) {
+		glUniform3f(uniforms.get(name), vector.get(0), vector.get(1), vector.get(2));
 	}
 	
 	@Override
