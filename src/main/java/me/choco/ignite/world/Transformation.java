@@ -37,11 +37,17 @@ public class Transformation {
 	}
 	
 	public void setRotation(float x, float y, float z) {
-		this.rotation.set(x, y, z);
+		this.rotation.set(x % 360, y % 360, z % 360);
 	}
 	
 	public void setRotation(Vector3f rotation) {
 		this.setRotation(rotation.x, rotation.y, rotation.z);
+	}
+	
+	public void rotate(float x, float y, float z) {
+		this.rotation.x = (rotation.x + x) % 360;
+		this.rotation.y = (rotation.y + y) % 360;
+		this.rotation.z = (rotation.z + z) % 360;
 	}
 	
 	public Vector3fc getRotation() {
