@@ -90,7 +90,7 @@ public class Transformation {
 		return scale.z;
 	}
 	
-	public Matrix4f getAsMatrix() {
+	public Matrix4f asMatrix() {
 		return new Matrix4f().scale(scale).translate(position).rotateXYZ(getRotationInRadians());
 	}
 
